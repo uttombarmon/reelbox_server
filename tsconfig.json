@@ -1,44 +1,42 @@
 {
-  // Visit https://aka.ms/tsconfig to read more about this file
+  // TypeScript configuration for Reelbox Server (Node + Express + Mongoose)
   "compilerOptions": {
-    // File Layout
+    /* === Directory Settings === */
     "rootDir": "./src",
     "outDir": "./dist",
 
-    // Environment Settings
-    // See also https://aka.ms/tsconfig/module
-    "module": "nodenext",
-    "target": "esnext",
-    "types": [],
-    // For nodejs:
-    // "lib": ["esnext"],
-    // "types": ["node"],
-    // and npm install -D @types/node
+    /* === Module & Target Environment === */
+    "target": "ES2022", // modern JS output
+    "module": "ESNext", // ESM syntax
+    "moduleResolution": "node", // for Node-style imports
+    "types": ["node"], // include Node.js types
+    "lib": ["ESNext"], // include latest JS features
 
-    // Other Outputs
-    "sourceMap": true,
-    "declaration": true,
-    "declarationMap": true,
+    /* === Output Options === */
+    "sourceMap": true, // generate source maps
+    "declaration": true, // generate .d.ts files
+    "declarationMap": true, // map declarations to source
+    "esModuleInterop": true, // allow default imports from CommonJS
+    "forceConsistentCasingInFileNames": true,
 
-    // Stricter Typechecking Options
+    /* === Strict Type Checking === */
+    "strict": true, // enable all strict checks
+    "noImplicitAny": true, // prevent implicit any types
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
+    "skipLibCheck": true,
 
-    // Style Options
-    // "noImplicitReturns": true,
-    // "noImplicitOverride": true,
-    // "noUnusedLocals": true,
-    // "noUnusedParameters": true,
-    // "noFallthroughCasesInSwitch": true,
-    // "noPropertyAccessFromIndexSignature": true,
-
-    // Recommended Options
-    "strict": true,
-    "jsx": "react-jsx",
+    /* === Module Behavior === */
     "verbatimModuleSyntax": true,
     "isolatedModules": true,
-    "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
-    "skipLibCheck": true
-  }
+
+    /* === Node.js Specific === */
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true, // allows importing .json config files
+    "emitDeclarationOnly": true, // required for allowImportingTsExtensions
+    "allowImportingTsExtensions": true,
+  },
+  "include": ["src"], // compile all files inside src/
+  "exclude": ["node_modules", "dist"] // ignore build and deps
 }
