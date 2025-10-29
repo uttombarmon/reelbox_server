@@ -1,5 +1,5 @@
-import connectDB from "../../config/ConnectDB.ts";
-import User, { type IUser } from "./user.model.ts";
+
+import { User, type IUser } from "./user.model.ts";
 
 export const getAllUsers = async (): Promise<IUser[]> => {
   return await User.find();
