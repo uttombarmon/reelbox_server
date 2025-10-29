@@ -1,42 +1,50 @@
 import { type Request, type Response } from "express";
+import type { AuthRequest } from "../../middleware/authMiddleware";
+import { uploadToImageKit, buildThumbnailUrl } from "../../utils/media.ts";
 import { Video } from "./video.model.ts";
-import { uploadToImageKit } from "../../utils/media.upload.ts";
-import multer from "multer";
-import type { AuthRequest } from "../../middleware/authMiddleware.ts";
 import { logger } from "../../utils/logger.ts";
 
-// configure multer (memory storage for buffer upload)
+import multer from "multer";
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 100 * 1024 * 1024 }, // 100MB max
+  limits: { fileSize: 200 * 1024 * 1024 }, // e.g., 200MB max
 });
 
-// Upload Video
+//upload video
 export const uploadVideo = async (req: AuthRequest, res: Response) => {
   try {
     if (!req.user) return res.status(401).json({ message: "Unauthorized" });
+
     const file = (req as any).file;
     if (!file) return res.status(400).json({ message: "No file uploaded" });
 
     // Upload to ImageKit
-    const uploaded = await uploadToImageKit(file.buffer, file.originalname);
-    const video = await Video.create({
+    const result = await uploadToImageKit(
+      file.buffer,
+      file.originalname,
+      "videos"
+    );
+
+    const videoUrl = result.url;
+    const thumbnailUrl = buildThumbnailUrl(videoUrl!);
+
+    const videoDoc = await Video.create({
       user: req.user._id,
-      videoUrl: uploaded.url,
-      thumbnailUrl: uploaded.thumbnailUrl ?? uploaded.url,
+      videoUrl,
+      thumbnailUrl,
       caption: req.body.caption,
       privacy: req.body.privacy || "public",
+      duration: result.metadata?.duration, // if returned from ImageKit
     });
 
-    logger.info(`Video uploaded by ${req.user.username}`);
-    res.status(201).json(video);
-  } catch (err: any) {
-    logger.error(`UploadVideo error: ${err.message}`);
-    res.status(500).json({ message: err.message });
+    logger.info(`Video uploaded: ${videoDoc._id} by user ${req.user.username}`);
+    return res.status(201).json(videoDoc);
+  } catch (error: any) {
+    logger.error(`error uploading video: ${error.message}`);
+    return res.status(500).json({ message: error.message });
   }
 };
-
-// Get Feed
+//get feed
 export const getFeed = async (req: Request, res: Response) => {
   try {
     const page = Number(req.query.page) || 0;
@@ -54,8 +62,7 @@ export const getFeed = async (req: Request, res: Response) => {
     res.status(500).json({ message: err.message });
   }
 };
-
-//  Get Single Video
+//Get Single Video
 export const getVideo = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -66,8 +73,7 @@ export const getVideo = async (req: Request, res: Response) => {
     res.status(500).json({ message: err.message });
   }
 };
-
-// Increment Views
+//Increment Views
 export const incrementView = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -77,8 +83,7 @@ export const incrementView = async (req: Request, res: Response) => {
     res.status(500).json({ message: err.message });
   }
 };
-
-//  Delete Video
+//Delete Video
 export const deleteVideo = async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params;
