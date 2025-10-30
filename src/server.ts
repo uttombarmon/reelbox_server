@@ -11,6 +11,7 @@ import connectDB from "./config/ConnectDB.ts";
 import videoRouter from "./modules/videos/video.routes.ts";
 import commentRouter from "./modules/comments/comment.routes.ts";
 import likeRouter from "./modules/likes/like.routes.ts";
+import followRouter from "./modules/follows/follow.routes.ts";
 
 const app = express();
 const PORT: number = 3000;
@@ -35,6 +36,7 @@ app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/videos", videoRouter);
 app.use("/api/v1/comments", commentRouter);
 app.use("/api/v1/like", likeRouter);
+app.use("/api/v1/follow", followRouter);
 app.use(logErrors);
 app.use(clientErrorHandler);
 if (!process.env.NODE_ENV) {
