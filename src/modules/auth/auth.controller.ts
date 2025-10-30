@@ -34,7 +34,13 @@ export const register = async (req: Request, res: Response) => {
     } as jwt.SignOptions);
 
     logger.info(`User registered: ${username}`);
-    res.status(201).json({ user: { id: user._id, username, email }, token });
+    res.cookie("auth_token", token, {
+      httpOnly: true, // The essential security setting
+      secure: process.env.NODE_ENV === "production", // Use 'true' in production
+      sameSite: "lax", // or 'strict' for stricter security
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days expiration
+    });
+    res.status(201).json({ user: { id: user._id, username, email } });
   } catch (err: any) {
     logger.error(`Register error: ${err.message}`);
     res.status(500).json({ message: err.message });
