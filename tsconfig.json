@@ -1,42 +1,34 @@
 {
-  // TypeScript configuration for Reelbox Server (Node + Express + Mongoose)
   "compilerOptions": {
     /* === Directory Settings === */
     "rootDir": "./src",
     "outDir": "./dist",
 
     /* === Module & Target Environment === */
-    "target": "ES2022", // modern JS output
-    "module": "ESNext", // ESM syntax
-    "moduleResolution": "node", // for Node-style imports
-    "types": ["node"], // include Node.js types
-    "lib": ["ESNext"], // include latest JS features
+    "target": "es2020",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "types": ["node"],
+    "lib": ["esnext"],
 
     /* === Output Options === */
-    "sourceMap": true, // generate source maps
-    "declaration": true, // generate .d.ts files
-    "declarationMap": true, // map declarations to source
-    "esModuleInterop": true, // allow default imports from CommonJS
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+    "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
 
     /* === Strict Type Checking === */
-    "strict": true, // enable all strict checks
-    "noImplicitAny": true, // prevent implicit any types
+    "strict": true,
+    "noImplicitAny": true,
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
     "skipLibCheck": true,
 
-    /* === Module Behavior === */
-    "verbatimModuleSyntax": true,
-    "isolatedModules": true,
-    "moduleDetection": "force",
-
     /* === Node.js Specific === */
     "allowSyntheticDefaultImports": true,
-    "resolveJsonModule": true, // allows importing .json config files
-    "emitDeclarationOnly": true, // required for allowImportingTsExtensions
-    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true
   },
-  "include": ["src"], // compile all files inside src/
-  "exclude": ["node_modules", "dist"] // ignore build and deps
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
 }

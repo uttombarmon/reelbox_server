@@ -1,8 +1,8 @@
 import { type Request, type Response } from "express";
-import { Comment } from "./comment.model.ts";
-import { Video } from "../videos/video.model.ts";
-import type { AuthRequest } from "../../middleware/authMiddleware.ts";
-import { logger } from "../../utils/logger.ts";
+import { Comment } from "./comment.model";
+import { Video } from "../videos/video.model";
+import type { AuthRequest } from "../../middleware/authMiddleware";
+import { logger } from "../../utils/logger";
 
 export const addComment = async (req: AuthRequest, res: Response) => {
   try {

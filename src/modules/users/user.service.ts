@@ -1,5 +1,5 @@
 
-import { User, type IUser } from "./user.model.ts";
+import { User, type IUser } from "./user.model";
 
 export const getAllUsers = async (): Promise<IUser[]> => {
   return await User.find();

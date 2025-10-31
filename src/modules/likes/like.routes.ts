@@ -1,6 +1,6 @@
 import express, { Router } from "express";
-import { toggleLike } from "./like.controller.ts";
-import { authMiddleware } from "../../middleware/authMiddleware.ts";
+import { toggleLike } from "./like.controller";
+import { authMiddleware } from "../../middleware/authMiddleware";
 
 const likeRouter: Router = express.Router();
 

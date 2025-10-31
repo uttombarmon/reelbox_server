@@ -1,6 +1,6 @@
 import express, { Router } from "express";
-import { getFeed, getVideo, incrementView, upload, uploadVideo } from "./video.controller.ts";
-import { authMiddleware } from "../../middleware/authMiddleware.ts";
+import { getFeed, getVideo, incrementView, upload, uploadVideo } from "./video.controller";
+import { authMiddleware } from "../../middleware/authMiddleware";
 
 const videoRouter: Router = express.Router();
 

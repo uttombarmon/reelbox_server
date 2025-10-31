@@ -6,8 +6,8 @@ import {
   getFollowing,
   checkMutualFollow,
   getSuggestedUsers,
-} from "./follow.controller.ts";
-import { authMiddleware } from "../../middleware/authMiddleware.ts";
+} from "./follow.controller";
+import { authMiddleware } from "../../middleware/authMiddleware";
 
 const followRouter: Router = Router();
 

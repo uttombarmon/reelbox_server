@@ -1,7 +1,7 @@
 import { type Request, type Response } from "express";
-import { Like } from "./like.model.ts";
-import { Video } from "../videos/video.model.ts";
-import type { AuthRequest } from "../../middleware/authMiddleware.ts";
+import { Like } from "./like.model";
+import { Video } from "../videos/video.model";
+import type { AuthRequest } from "../../middleware/authMiddleware";
 
 export const toggleLike = async (req: AuthRequest, res: Response) => {
   try {

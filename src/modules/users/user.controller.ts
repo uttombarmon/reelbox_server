@@ -1,8 +1,8 @@
 import { type Request, type Response } from "express";
-import { User } from "./user.model.ts";
-import { Follow } from "../follows/follow.model.ts";
-import type { AuthRequest } from "../../middleware/authMiddleware.ts";
-import { logger } from "../../utils/logger.ts";
+import { User } from "./user.model";
+import { Follow } from "../follows/follow.model";
+import type { AuthRequest } from "../../middleware/authMiddleware";
+import { logger } from "../../utils/logger";
 
 export const getProfile = async (req: Request, res: Response) => {
   try {
@@ -15,7 +15,6 @@ export const getProfile = async (req: Request, res: Response) => {
     res.status(500).json({ message: err.message });
   }
 };
-
 export const updateProfile = async (req: AuthRequest, res: Response) => {
   try {
     const user = req.user;

@@ -1,4 +1,4 @@
-import { imagekit } from "./imagekit.ts";
+import { imagekit } from "./imagekit";
 
 export const uploadToImageKit = async (
   buffer: Buffer,

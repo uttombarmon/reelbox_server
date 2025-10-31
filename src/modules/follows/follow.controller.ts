@@ -1,8 +1,8 @@
 import {type Request,type Response } from "express";
-import { Follow } from "./follow.model.ts";
-import { User } from "../users/user.model.ts"; // assuming you already have a User model
+import { Follow } from "./follow.model";
+import { User } from "../users/user.model"; // assuming you already have a User model
 import mongoose from "mongoose";
-import type { AuthRequest } from "../../middleware/authMiddleware.ts";
+import type { AuthRequest } from "../../middleware/authMiddleware";
 
 export const followUser = async (req: Request, res: Response) => {
   try {

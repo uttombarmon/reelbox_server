@@ -1,6 +1,6 @@
 import express, { type Router } from "express";
-import { getProfile, updateProfile, followToggle } from "./user.controller.ts";
-import { authMiddleware } from "../../middleware/authMiddleware.ts";
+import { getProfile, updateProfile, followToggle } from "./user.controller";
+import { authMiddleware } from "../../middleware/authMiddleware";
 
 const userRouter: Router = express.Router();
 

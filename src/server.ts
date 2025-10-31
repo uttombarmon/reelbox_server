@@ -2,20 +2,20 @@ import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import methodOverride from "method-override";
-import { errorHandler } from "./middleware/errorHandler.ts";
+import { errorHandler } from "./middleware/errorHandler";
 import dotenv from "dotenv";
-import { clientErrorHandler } from "./middleware/clientErrorHandle.ts";
-import { logErrors } from "./middleware/logErrors.ts";
-import userRouter from "./modules/users/user.routes.ts";
-import authRouter from "./modules/auth/auth.routes.ts";
-import connectDB from "./config/ConnectDB.ts";
-import videoRouter from "./modules/videos/video.routes.ts";
-import commentRouter from "./modules/comments/comment.routes.ts";
-import likeRouter from "./modules/likes/like.routes.ts";
-import followRouter from "./modules/follows/follow.routes.ts";
+import { clientErrorHandler } from "./middleware/clientErrorHandle";
+import userRouter from "./modules/users/user.routes";
+import authRouter from "./modules/auth/auth.routes";
+import connectDB from "./config/ConnectDB";
+import videoRouter from "./modules/videos/video.routes";
+import commentRouter from "./modules/comments/comment.routes";
+import likeRouter from "./modules/likes/like.routes";
+import followRouter from "./modules/follows/follow.routes";
+import cookieParser from "cookie-parser";
 
 const app = express();
-const PORT: number = 3000;
+const PORT: number = 5000;
 dotenv.config();
 
 app.use(express.json());
@@ -24,9 +24,10 @@ app.use(
     extended: true,
   })
 );
-app.use(cors({ origin: "http://localhost:3000" }));
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 app.use(bodyParser.json());
 app.use(methodOverride());
+app.use(cookieParser());
 
 app.get("/", (req: any, res: any) => {
   res.send("Hello from ReelBox Server!");
@@ -39,7 +40,6 @@ app.use("/api/v1/videos", videoRouter);
 app.use("/api/v1/comments", commentRouter);
 app.use("/api/v1/like", likeRouter);
 app.use("/api/v1/follow", followRouter);
-app.use(logErrors);
 app.use(clientErrorHandler);
 if (!process.env.NODE_ENV) {
   app.use(errorHandler);

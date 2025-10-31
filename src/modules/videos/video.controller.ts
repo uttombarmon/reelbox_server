@@ -1,8 +1,8 @@
 import { type Request, type Response } from "express";
 import type { AuthRequest } from "../../middleware/authMiddleware";
-import { uploadToImageKit, buildThumbnailUrl } from "../../utils/media.ts";
-import { Video } from "./video.model.ts";
-import { logger } from "../../utils/logger.ts";
+import { uploadToImageKit, buildThumbnailUrl } from "../../utils/media";
+import { Video } from "./video.model";
+import { logger } from "../../utils/logger";
 
 import multer from "multer";
 const upload = multer({
