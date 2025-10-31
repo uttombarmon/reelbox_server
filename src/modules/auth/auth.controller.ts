@@ -4,11 +4,9 @@ import jwt from "jsonwebtoken";
 import { User } from "../users/user.model";
 import { logger } from "../../utils/logger";
 import { AuthRequest } from "../../middleware/authMiddleware";
-// const JWTSECRET = process.env.JWT_SECRET as string;
-export const JWT_EXPIRES_IN =
-  process.env.JWT_JWT_EXPIRES_IN || ("7d" as string);
 
 export const register = async (req: Request, res: Response) => {
+  const JWT_EXPIRES_IN = process.env.JWT_JWT_EXPIRES_IN || ("7d" as string);
   const JWTSECRET = process.env.JWT_SECRET as string;
   logger.info("Registering user...");
   logger.info(JWTSECRET);
@@ -54,14 +52,16 @@ export const register = async (req: Request, res: Response) => {
 
 export const login = async (req: Request, res: Response) => {
   try {
+    // const JWTSECRET = process.env.JWT_SECRET as string;
+    const JWT_EXPIRES_IN = process.env.JWT_JWT_EXPIRES_IN || ("7d" as string);
     const JWTSECRET = process.env.JWT_SECRET as string;
-    const { emailOrUsername, password } = req.body;
-    if (!emailOrUsername || !password) {
+    const { email, password } = req.body;
+    if (!email || !password) {
       return res.status(400).json({ message: "Missing fields" });
     }
 
     const user = await User.findOne({
-      $or: [{ email: emailOrUsername }, { username: emailOrUsername }],
+      $or: [{ email: email }, { username: email }],
     });
 
     if (!user) return res.status(401).json({ message: "Invalid credentials" });
@@ -77,8 +77,13 @@ export const login = async (req: Request, res: Response) => {
     const token = jwt.sign({ id: user._id }, JWTSECRET, {
       expiresIn: JWT_EXPIRES_IN,
     } as jwt.SignOptions);
+    res.cookie("auth_token", token, {
+      httpOnly: true, // The essential security setting
+      secure: process.env.NODE_ENV === "production", // Use 'true' in production
+      sameSite: "lax", // or 'strict' for stricter security
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days expiration
+    });
 
-    logger.info(`User login: ${user.username}`);
     res.json({
       user: { id: user._id, username: user.username, email: user.email },
       token,
@@ -100,4 +105,17 @@ export const authme = async (req: AuthRequest, res: Response) => {
   } catch (err: any) {
     res.status(500).json({ message: err.message });
   }
+};
+export const logout = (req: Request, res: Response) => {
+  const COOKIE_NAME = process.env.COOKIE_NAME as string;
+
+  res.clearCookie(COOKIE_NAME, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+  });
+  return res
+    .status(200)
+    .json({ message: "Logout successful: Token cookie cleared." });
 };

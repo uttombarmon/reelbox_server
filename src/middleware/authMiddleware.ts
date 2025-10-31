@@ -11,7 +11,6 @@ export const authMiddleware = async (
   res: Response,
   next: NextFunction
 ) => {
-  console.log("authMiddleware");
   const JWT_SECRET = process.env.JWT_SECRET as string;
   try {
     const token2 = req.cookies.auth_token;
